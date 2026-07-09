@@ -1,15 +1,22 @@
 "use client";
 
-import { useState, useMemo, ReactNode } from "react";
+import { useState, useMemo } from "react";
 import SearchBar from "./SearchBar.client";
+import ProductCard from "./ProductCard";
 import { Product } from "@/lib/types";
+
+const groupLabels: Record<string, string> = {
+  tradicionais: "Tradicionais",
+  combinados: "Combinados",
+  especiais: "Especiais",
+  doces: "Doces",
+};
 
 interface Props {
   products: Product[];
-  children: (filtered: Product[]) => ReactNode;
 }
 
-export default function CardapioSearchWrapper({ products, children }: Props) {
+export default function CardapioSearchWrapper({ products }: Props) {
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
@@ -23,12 +30,33 @@ export default function CardapioSearchWrapper({ products, children }: Props) {
     );
   }, [products, query]);
 
+  let currentGroup = "";
+
   return (
     <div>
       <div className="mb-6">
         <SearchBar onSearch={setQuery} />
       </div>
-      {children(filtered)}
+      <div className="space-y-3">
+        {filtered.length === 0 && (
+          <p className="text-center text-muted-foreground py-8">Nenhum produto encontrado</p>
+        )}
+        {filtered.map((product, i) => {
+          const showGroup = product.group && product.group !== currentGroup;
+          if (product.group) currentGroup = product.group;
+
+          return (
+            <div key={product.id}>
+              {showGroup && (
+                <h3 className={`font-display text-sm font-semibold text-muted-foreground uppercase tracking-wider ${i > 0 ? "pt-8" : ""} mb-3`}>
+                  {groupLabels[product.group!] || product.group}
+                </h3>
+              )}
+              <ProductCard product={product} index={i} />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
