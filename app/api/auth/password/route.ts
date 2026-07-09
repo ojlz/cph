@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
+import { getAdminPasswordHash, saveAdminPasswordHash } from "@/lib/admin-storage";
 
 const isLocal =
   process.env.LOCAL === "true" || process.env.NODE_ENV === "development";
@@ -30,25 +31,29 @@ export async function PUT(req: Request) {
     return NextResponse.json({ error: "Nova senha deve ter no mínimo 4 caracteres" }, { status: 400 });
   }
 
-  const adminPassword = process.env.ADMIN_PASSWORD;
+  const bcrypt = await import("bcryptjs");
 
-  if (!adminPassword) {
+  // Busca hash atual (salvo ou variável de ambiente)
+  const storedHash = await getAdminPasswordHash();
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  const currentHash = storedHash || adminPassword;
+
+  if (!currentHash) {
     return NextResponse.json({ error: "Admin não configurado" }, { status: 500 });
   }
 
-  if (isLocal) {
-    if (currentPassword !== adminPassword) {
-      return NextResponse.json({ error: "Senha atual inválida" }, { status: 401 });
-    }
-    return NextResponse.json({ success: true, message: "Altere a variável ADMIN_PASSWORD no .env.local manualmente" });
-  }
+  // Valida senha atual
+  const valid = isLocal
+    ? currentPassword === currentHash
+    : await bcrypt.compare(currentPassword, currentHash);
 
-  const bcrypt = await import("bcryptjs");
-  const valid = await bcrypt.compare(currentPassword as string, adminPassword);
   if (!valid) {
     return NextResponse.json({ error: "Senha atual inválida" }, { status: 401 });
   }
 
-  await bcrypt.hash(newPassword as string, 12);
-  return NextResponse.json({ success: true, message: "Senha alterada. Atualize a variável ADMIN_PASSWORD no Vercel." });
+  // Gera hash da nova senha e salva
+  const newHash = await bcrypt.hash(newPassword, 12);
+  await saveAdminPasswordHash(newHash);
+
+  return NextResponse.json({ success: true, message: "Senha alterada com sucesso!" });
 }

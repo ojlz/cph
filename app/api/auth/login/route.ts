@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { setSession } from "@/lib/auth";
 import { checkRateLimit, resetRateLimit, getClientIp } from "@/lib/rate-limit";
+import { getAdminPasswordHash } from "@/lib/admin-storage";
 
 const isLocal =
   process.env.LOCAL === "true" || process.env.NODE_ENV === "development";
@@ -26,18 +27,29 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Senha inválida" }, { status: 401 });
   }
 
-  const adminPassword = process.env.ADMIN_PASSWORD;
+  const bcrypt = await import("bcryptjs");
 
+  // Checa hash salvo no GitHub/locaL primeiro
+  const storedHash = await getAdminPasswordHash();
+  if (storedHash) {
+    const ok = await bcrypt.compare(password, storedHash);
+    if (ok) {
+      resetRateLimit(ip, "auth-login");
+      await setSession();
+      return NextResponse.json({ success: true });
+    }
+    return NextResponse.json({ error: "Senha inválida" }, { status: 401 });
+  }
+
+  // Fallback: variável de ambiente
+  const adminPassword = process.env.ADMIN_PASSWORD;
   if (!adminPassword) {
     return NextResponse.json({ error: "Admin não configurado" }, { status: 500 });
   }
 
   const ok = isLocal
     ? password === adminPassword
-    : await (async () => {
-        const bcrypt = await import("bcryptjs");
-        return bcrypt.compare(password, adminPassword);
-      })();
+    : await bcrypt.compare(password, adminPassword);
 
   if (!ok) {
     return NextResponse.json({ error: "Senha inválida" }, { status: 401 });

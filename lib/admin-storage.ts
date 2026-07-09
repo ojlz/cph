@@ -132,3 +132,29 @@ export async function saveAdminHours(hours: OpeningHours): Promise<void> {
   const mod = await import("@/lib/github/client");
   await mod.commitFile("data/opening-hours.json", JSON.stringify(hours, null, 2) + "\n", "Atualizar horários [admin]");
 }
+
+export async function getAdminPasswordHash(): Promise<string | null> {
+  if (isLocal) {
+    const fs = await import("fs/promises");
+    try {
+      const raw = await fs.readFile(/*turbopackIgnore: true*/ process.cwd() + "/data/admin-password.json", "utf-8");
+      return JSON.parse(raw).hash;
+    } catch {
+      return null;
+    }
+  }
+  const mod = await import("@/lib/github/client");
+  try {
+    const { content } = await mod.getFile("data/admin-password.json");
+    return JSON.parse(content).hash;
+  } catch {
+    return null;
+  }
+}
+
+export async function saveAdminPasswordHash(hash: string): Promise<void> {
+  const data = { hash };
+  if (isLocal) return localWrite("data/admin-password.json", data);
+  const mod = await import("@/lib/github/client");
+  await mod.commitFile("data/admin-password.json", JSON.stringify(data, null, 2) + "\n", "Atualizar senha admin [admin]");
+}
