@@ -10,7 +10,9 @@ export async function GET() {
 
 export async function PUT(req: Request) {
   if (!(await getSession())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const data = await req.json();
+  let data: unknown;
+  try { data = await req.json(); } catch { return NextResponse.json({ error: "JSON inválido" }, { status: 400 }); }
+  if (!Array.isArray(data)) return NextResponse.json({ error: "Formato inválido — array esperado" }, { status: 400 });
   await saveAdminCategories(data);
   return NextResponse.json({ success: true });
 }

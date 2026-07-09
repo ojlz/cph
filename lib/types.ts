@@ -17,6 +17,7 @@ export interface Product {
   featured: boolean;
   promotionId?: string;
   oldPrice?: number;
+  views?: number;
 }
 
 export interface Category {
@@ -60,6 +61,42 @@ export interface DaySchedule {
   open2?: string;
   close2?: string;
   isOpen: boolean;
+}
+
+export interface OrderItem {
+  productName: string;
+  variantLabel?: string;
+  price: number;
+  quantity: number;
+  subtotal: number;
+}
+
+export interface Order {
+  id: string;
+  date: string;
+  nome: string;
+  items: OrderItem[];
+  subtotal: number;
+  discountPercent: number;
+  couponCode?: string;
+  total: number;
+  mode: "retirada" | "entrega";
+  endereco?: { bairro: string; rua: string; numero: string; referencia?: string };
+  pagamento: string;
+  observacoes?: string;
+  status: "pendente" | "confirmado" | "cancelado";
+  ip?: string;
+  deliveryFee?: number;
+}
+
+export interface ContactMessage {
+  id: string;
+  date: string;
+  name: string;
+  email?: string;
+  subject: string;
+  rating?: number;
+  message: string;
 }
 
 export interface BusinessSettings {

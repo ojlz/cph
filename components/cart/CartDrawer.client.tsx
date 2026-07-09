@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { X, Minus, Plus, ShoppingBag, Tag } from "lucide-react";
+import { X, Minus, Plus, ShoppingBag, Tag, Loader2 } from "lucide-react";
 import { useCart, CartItem } from "@/lib/cart-context";
 import { formatCurrency } from "@/lib/utils";
 import { getSettings } from "@/lib/services/settings.service";
 import { trackEvent } from "@/lib/analytics";
+import { usePromotions } from "@/lib/promotions-context";
 import { Promotion } from "@/lib/types";
 
 type PaymentMethod = "pix" | "dinheiro" | "cartao";
@@ -19,6 +20,14 @@ const paymentLabels: Record<PaymentMethod, string> = {
   cartao: "Cartão",
 };
 
+interface ValidatedItem {
+  productName: string;
+  variantLabel?: string;
+  price: number;
+  quantity: number;
+  subtotal: number;
+}
+
 export default function CartDrawer({
   open,
   onClose,
@@ -27,6 +36,7 @@ export default function CartDrawer({
   onClose: () => void;
 }) {
   const { items, updateQuantity, totalPrice: rawTotal } = useCart();
+  const { promotions: allPromotions } = usePromotions();
   const [mode, setMode] = useState<"retirada" | "entrega">("retirada");
   const [nome, setNome] = useState("");
   const [pagamento, setPagamento] = useState<PaymentMethod>("pix");
@@ -36,28 +46,17 @@ export default function CartDrawer({
   const [referencia, setReferencia] = useState("");
   const [observacoes, setObservacoes] = useState("");
 
-  // Coupon state
-  const [coupons, setCoupons] = useState<Promotion[]>([]);
+  const coupons = allPromotions.filter(
+    (p) =>
+      p.type === "coupon" &&
+      p.couponCode &&
+      (!p.validUntil || p.validUntil >= new Date().toISOString().slice(0, 10)),
+  );
   const [couponInput, setCouponInput] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState<Promotion | null>(null);
   const [couponError, setCouponError] = useState("");
-
-  useEffect(() => {
-    fetch("/api/admin/promocoes")
-      .then((r) => r.json())
-      .then((list: Promotion[]) =>
-        setCoupons(
-          list.filter(
-            (p) =>
-              p.active &&
-              p.type === "coupon" &&
-              p.couponCode &&
-              (!p.validUntil || p.validUntil >= new Date().toISOString().slice(0, 10)),
-          ),
-        ),
-      )
-      .catch(() => {});
-  }, []);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState("");
 
   const discountPercent = appliedCoupon?.discountPercent || 0;
   const totalPrice = rawTotal - (rawTotal * discountPercent) / 100;
@@ -77,26 +76,74 @@ export default function CartDrawer({
     }
   };
 
-  const formatItem = (i: CartItem) => {
-    let line = `${i.quantity}x ${i.productName}`;
-    if (i.variantLabel) line += ` (${i.variantLabel})`;
-    line += ` - ${formatCurrency(i.price * i.quantity)}`;
-    return line;
+  const handleSend = async () => {
+    setSending(true);
+    setSendError("");
+
+    try {
+      const payload = {
+        products: items.map((i: CartItem) => ({
+          productId: i.productId,
+          variantLabel: i.variantLabel,
+          quantity: i.quantity,
+        })),
+        couponCode: appliedCoupon?.couponCode,
+        nome: nome.trim(),
+        mode,
+        pagamento,
+        bairro: bairro.trim(),
+        rua: rua.trim(),
+        numero: numero.trim(),
+        referencia: referencia.trim(),
+        observacoes: observacoes.trim(),
+      };
+
+      const res = await fetch("/api/order/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error("Falha na validação");
+
+      const data = await res.json();
+      mountMessage(data);
+    } catch {
+      setSendError("Erro ao validar pedido. Tente novamente.");
+    } finally {
+      setSending(false);
+    }
   };
 
-  const buildMessage = () => {
+  const mountMessage = (data: {
+    orderId: string;
+    items: ValidatedItem[];
+    total: number;
+    couponCode?: string;
+    name: string;
+    whatsapp: string;
+  }) => {
+    trackEvent("whatsapp", "cart");
+
     const sep = "\n";
     const block = "\n\n";
-    let msg = `*Pedido - ${settings.name}*${block}`;
+    let msg = `*Pedido - ${data.name}*\n#${data.orderId}${block}`;
     msg += `*Nome:* ${nome}${block}`;
     msg += `*Itens:*${sep}`;
-    msg += items.map(formatItem).join(sep);
-    if (hasDiscount) {
-      msg += `${block}*Subtotal:* ${formatCurrency(rawTotal)}`;
-      msg += `${sep}*Desconto (${discountPercent}%):* -${formatCurrency(rawTotal - totalPrice)}`;
+    msg += data.items
+      .map((i: ValidatedItem) => {
+        let line = `${i.quantity}x ${i.productName}`;
+        if (i.variantLabel) line += ` (${i.variantLabel})`;
+        return line;
+      })
+      .join(sep);
+
+    msg += `${block}*Total:* ${formatCurrency(data.total)}`;
+    if (data.couponCode) {
+      msg += `${sep}*Cupom:* ${data.couponCode}`;
     }
-    msg += `${block}*Total:* ${formatCurrency(totalPrice)}${block}`;
-    msg += `*${mode === "retirada" ? "Retirada no local" : "Entrega"}*`;
+
+    msg += `${block}*${mode === "retirada" ? "Retirada no local" : "Entrega"}*`;
     if (mode === "entrega") {
       msg += `${sep}Bairro: ${bairro}${sep}Rua: ${rua}, ${numero}`;
       if (referencia) msg += `${sep}Referência: ${referencia}`;
@@ -108,13 +155,8 @@ export default function CartDrawer({
     if (observacoes) {
       msg += `${block}*Observações:*${sep}${observacoes}`;
     }
-    return encodeURIComponent(msg);
-  };
 
-  const handleSend = () => {
-    trackEvent("whatsapp", "cart");
-    const msg = buildMessage();
-    window.open(`https://wa.me/${settings.whatsapp}?text=${msg}`, "_blank");
+    window.open(`https://wa.me/${data.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank");
   };
 
   return (
@@ -397,12 +439,23 @@ export default function CartDrawer({
                     />
                   </div>
 
+                  {sendError && (
+                    <p className="text-xs text-red-400 text-center">{sendError}</p>
+                  )}
+
                   <button
                     onClick={handleSend}
-                    disabled={!nome.trim()}
-                    className="w-full rounded-full bg-primary text-primary-foreground py-4 text-sm font-semibold hover:brightness-110 transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:brightness-100"
+                    disabled={!nome.trim() || sending}
+                    className="w-full rounded-full bg-primary text-primary-foreground py-4 text-sm font-semibold hover:brightness-110 transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:brightness-100 flex items-center justify-center gap-2"
                   >
-                    Enviar para WhatsApp
+                    {sending ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        Validando...
+                      </>
+                    ) : (
+                      "Enviar para WhatsApp"
+                    )}
                   </button>
                 </>
               )}

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { AnalyticsData, AnalyticsEvent } from "@/lib/analytics/types";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 function getToday(): string {
   return new Date().toISOString().split("T")[0];
@@ -33,6 +34,11 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const ip = getClientIp(req);
+  if (!checkRateLimit(ip, { max: 200, windowMinutes: 15 }, "track")) {
+    return NextResponse.json({ error: "Muitas requisições. Tente novamente em 15 minutos." }, { status: 429 });
+  }
+
   const { event, label }: AnalyticsEvent = await req.json();
   if (!event) return NextResponse.json({ error: "event required" }, { status: 400 });
 

@@ -54,7 +54,8 @@ export async function uploadImage(
   filename: string,
   base64: string,
 ): Promise<string> {
-  const path = `public/images/products/${filename}`;
+  const safe = filename.replace(/[^a-zA-Z0-9._-]/g, "");
+  const path = `public/images/products/${safe}`;
   const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
   let sha: string | undefined;
@@ -77,5 +78,5 @@ export async function uploadImage(
   });
   if (!res.ok) throw new Error(`Image upload failed: ${res.status}`);
 
-  return `/images/products/${filename}`;
+  return `/images/products/${safe}`;
 }

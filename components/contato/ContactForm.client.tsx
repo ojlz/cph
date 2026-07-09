@@ -43,7 +43,12 @@ export default function ContactForm() {
   });
 
   const onSubmit = async (data: FormData) => {
-    await new Promise((r) => setTimeout(r, 1000));
+    const res = await fetch("/api/contato", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) return;
     setSubmitted(true);
   };
 

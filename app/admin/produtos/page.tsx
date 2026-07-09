@@ -2,19 +2,23 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Plus, Edit2, Trash2 } from "lucide-react";
+import { Plus, Edit2, Trash2, Eye } from "lucide-react";
 import { Product } from "@/lib/types";
 import { formatCurrency } from "@/lib/utils";
 
 export default function AdminProdutos() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [views, setViews] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/admin/produtos")
-      .then((r) => r.json())
-      .then(setProducts)
-      .finally(() => setLoading(false));
+    Promise.all([
+      fetch("/api/admin/produtos").then((r) => r.json()),
+      fetch("/api/track/product-view").then((r) => r.json()),
+    ]).then(([prods, v]) => {
+      setProducts(prods);
+      setViews(v);
+    }).finally(() => setLoading(false));
   }, []);
 
   const handleDelete = async (id: string) => {
@@ -65,9 +69,15 @@ export default function AdminProdutos() {
                 {p.description}
               </p>
             </div>
-            <span className="text-sm font-semibold text-primary shrink-0 mr-4">
-              {formatCurrency(p.price)}
-            </span>
+            <div className="flex items-center gap-3 shrink-0 mr-2">
+              <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                <Eye size={12} />
+                {views[p.id] || 0}
+              </span>
+              <span className="text-sm font-semibold text-primary">
+                {formatCurrency(p.price)}
+              </span>
+            </div>
             <div className="flex items-center gap-2 shrink-0">
               <Link
                 href={`/admin/produtos/${p.id}`}

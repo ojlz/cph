@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Plus, Minus, Award, Heart, Shield } from "lucide-react";
 import { getFeaturedProducts } from "@/lib/services/product.service";
 import { getSettings } from "@/lib/services/settings.service";
 import { formatCurrency } from "@/lib/utils";
 import { useCart } from "@/lib/cart-context";
-import { Promotion } from "@/lib/types";
+import { usePromotions } from "@/lib/promotions-context";
 import ScrollReveal from "@/components/shared/ScrollReveal.client";
 import SectionTitle from "@/components/shared/SectionTitle";
 
@@ -34,23 +33,13 @@ const values = [
 
 export default function Destaques() {
   const { items, addItem, updateQuantity } = useCart();
-  const [promocoes, setPromocoes] = useState<Promotion[]>([]);
+  const { promotions: allPromotions } = usePromotions();
 
-  useEffect(() => {
-    fetch("/api/admin/promocoes")
-      .then((r) => r.json())
-      .then((list: Promotion[]) =>
-        setPromocoes(
-          list.filter(
-            (p) =>
-              p.active &&
-              p.type === "direct" &&
-              (!p.validUntil || p.validUntil >= new Date().toISOString().slice(0, 10)),
-          ),
-        ),
-      )
-      .catch(() => {});
-  }, []);
+  const promocoes = allPromotions.filter(
+    (p) =>
+      p.type === "direct" &&
+      (!p.validUntil || p.validUntil >= new Date().toISOString().slice(0, 10)),
+  );
 
   const getPromotion = (productId: string) =>
     promocoes.find((p) => p.productId === productId);

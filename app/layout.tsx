@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, Inter_Tight } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/components/layout/ThemeProvider";
 import CartProviderGlobal from "@/components/cart/CartProviderGlobal.client";
+import { PromotionsProvider } from "@/lib/promotions-context";
 import AnalyticsProvider from "@/components/layout/AnalyticsProvider";
 import { getSettings } from "@/lib/services/settings.service";
 
@@ -42,6 +43,9 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  icons: {
+    icon: "/images/logo-icon.png",
   },
 };
 
@@ -83,10 +87,12 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <ThemeProvider>
-          <CartProviderGlobal>
-            {children}
-            <AnalyticsProvider />
-          </CartProviderGlobal>
+          <PromotionsProvider>
+            <CartProviderGlobal>
+              {children}
+              <AnalyticsProvider />
+            </CartProviderGlobal>
+          </PromotionsProvider>
         </ThemeProvider>
       </body>
     </html>

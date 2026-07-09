@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Product, Promotion } from "@/lib/types";
+import { useEffect } from "react";
+import { Product } from "@/lib/types";
 import { formatCurrency } from "@/lib/utils";
 import { useCart } from "@/lib/cart-context";
+import { usePromotions } from "@/lib/promotions-context";
 import { Plus, Minus } from "lucide-react";
 
 interface ProductCardProps {
@@ -11,25 +12,25 @@ interface ProductCardProps {
   index?: number;
 }
 
+const trackedViews = new Set<string>();
+
 export default function ProductCard({ product }: ProductCardProps) {
   const { items, addItem, updateQuantity } = useCart();
-  const [promotion, setPromotion] = useState<Promotion | null>(null);
+  const { promotions } = usePromotions();
 
   useEffect(() => {
-    fetch("/api/admin/promocoes")
-      .then((r) => r.json())
-      .then((list: Promotion[]) => {
-        const active = list.find(
-          (p) =>
-            p.active &&
-            p.type === "direct" &&
-            p.productId === product.id &&
-            (!p.validUntil || p.validUntil >= new Date().toISOString().slice(0, 10)),
-        );
-        setPromotion(active || null);
-      })
-      .catch(() => {});
+    if (!trackedViews.has(product.id)) {
+      trackedViews.add(product.id);
+      navigator.sendBeacon("/api/track/product-view", JSON.stringify({ productId: product.id }));
+    }
   }, [product.id]);
+
+  const promotion = promotions.find(
+    (p) =>
+      p.type === "direct" &&
+      p.productId === product.id &&
+      (!p.validUntil || p.validUntil >= new Date().toISOString().slice(0, 10)),
+  ) || null;
 
   const getQty = (variantLabel?: string) => {
     const item = items.find(

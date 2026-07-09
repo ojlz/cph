@@ -1,4 +1,4 @@
-import { Product, Category, Promotion, BusinessSettings, OpeningHours } from "@/lib/types";
+import { Product, Category, Promotion, BusinessSettings, OpeningHours, Order, ContactMessage } from "@/lib/types";
 import productsData from "@/data/products.json";
 import categoriesData from "@/data/categories.json";
 
@@ -7,14 +7,14 @@ const isLocal =
 
 async function localRead<T>(file: string): Promise<T> {
   const fs = await import("fs/promises");
-  const raw = await fs.readFile(process.cwd() + "/" + file, "utf-8");
+  const raw = await fs.readFile(/*turbopackIgnore: true*/ process.cwd() + "/" + file, "utf-8");
   return JSON.parse(raw) as T;
 }
 
 async function localWrite(file: string, data: unknown): Promise<void> {
   const fs = await import("fs/promises");
   const json = JSON.stringify(data, null, 2) + "\n";
-  await fs.writeFile(process.cwd() + "/" + file, json, "utf-8");
+  await fs.writeFile(/*turbopackIgnore: true*/ process.cwd() + "/" + file, json, "utf-8");
 }
 
 async function gitHubModule() {
@@ -80,6 +80,51 @@ export async function getAdminHours(): Promise<OpeningHours> {
   const mod = await import("@/lib/github/client");
   const { content } = await mod.getFile("data/opening-hours.json");
   return JSON.parse(content);
+}
+
+function orderPeriod(date: Date): string {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+}
+
+export async function getAdminOrders(period?: string): Promise<Order[]> {
+  if (isLocal) {
+    if (period) return localRead<Order[]>(`data/orders/${period}.json`);
+    const fs = await import("fs/promises");
+    try {
+      const files = await fs.readdir(/*turbopackIgnore: true*/ process.cwd() + "/data/orders");
+      const all: Order[] = [];
+      for (const f of files.sort().reverse()) {
+        if (!f.endsWith(".json")) continue;
+        const data: Order[] = JSON.parse(await fs.readFile(/*turbopackIgnore: true*/ process.cwd() + "/data/orders/" + f, "utf-8"));
+        all.push(...data);
+      }
+      return all;
+    } catch { return []; }
+  }
+  const mod = await import("@/lib/github/client");
+  const { content } = await mod.getFile(`data/orders/${period || orderPeriod(new Date())}.json`);
+  return JSON.parse(content);
+}
+
+export async function saveAdminOrders(orders: Order[], period?: string): Promise<void> {
+  const p = period || orderPeriod(new Date());
+  const path = `data/orders/${p}.json`;
+  if (isLocal) return localWrite(path, orders);
+  const mod = await import("@/lib/github/client");
+  await mod.commitFile(path, JSON.stringify(orders, null, 2) + "\n", `Atualizar pedidos ${p} [admin]`);
+}
+
+export async function getAdminMessages(): Promise<ContactMessage[]> {
+  if (isLocal) return localRead<ContactMessage[]>("data/messages.json");
+  const mod = await import("@/lib/github/client");
+  const { content } = await mod.getFile("data/messages.json");
+  return JSON.parse(content);
+}
+
+export async function saveAdminMessages(messages: ContactMessage[]): Promise<void> {
+  if (isLocal) return localWrite("data/messages.json", messages);
+  const mod = await import("@/lib/github/client");
+  await mod.commitFile("data/messages.json", JSON.stringify(messages, null, 2) + "\n", "Atualizar mensagens [admin]");
 }
 
 export async function saveAdminHours(hours: OpeningHours): Promise<void> {

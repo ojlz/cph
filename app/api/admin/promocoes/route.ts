@@ -11,27 +11,36 @@ export async function GET() {
 
 export async function POST(req: Request) {
   if (!(await getSession())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const data: Promotion = await req.json();
+  let data: unknown;
+  try { data = await req.json(); } catch { return NextResponse.json({ error: "JSON inválido" }, { status: 400 }); }
+  if (!data || typeof data !== "object") return NextResponse.json({ error: "Dados inválidos" }, { status: 400 });
   const promotions = await getAdminPromotions();
-  promotions.push(data);
+  promotions.push(data as Promotion);
   await saveAdminPromotions(promotions);
   return NextResponse.json({ success: true });
 }
 
 export async function PUT(req: Request) {
   if (!(await getSession())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const data: Promotion = await req.json();
+  let data: unknown;
+  try { data = await req.json(); } catch { return NextResponse.json({ error: "JSON inválido" }, { status: 400 }); }
+  if (!data || typeof data !== "object") return NextResponse.json({ error: "Dados inválidos" }, { status: 400 });
+  const d = data as Promotion;
+  if (!d.id) return NextResponse.json({ error: "ID obrigatório" }, { status: 400 });
   const promotions = await getAdminPromotions();
-  const idx = promotions.findIndex((p) => p.id === data.id);
+  const idx = promotions.findIndex((p) => p.id === d.id);
   if (idx === -1) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  promotions[idx] = data;
+  promotions[idx] = d;
   await saveAdminPromotions(promotions);
   return NextResponse.json({ success: true });
 }
 
 export async function DELETE(req: Request) {
   if (!(await getSession())) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const { id } = await req.json();
+  let data: unknown;
+  try { data = await req.json(); } catch { return NextResponse.json({ error: "JSON inválido" }, { status: 400 }); }
+  const { id } = (data || {}) as Record<string, unknown>;
+  if (typeof id !== "string" || !id) return NextResponse.json({ error: "ID obrigatório" }, { status: 400 });
   const promotions = await getAdminPromotions();
   await saveAdminPromotions(promotions.filter((p) => p.id !== id));
   return NextResponse.json({ success: true });

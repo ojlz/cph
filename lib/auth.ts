@@ -1,7 +1,17 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
-const secret = new TextEncoder().encode(process.env.JWT_SECRET || "fallback-dev-secret");
+const isLocal =
+  process.env.LOCAL === "true" || process.env.NODE_ENV === "development";
+
+function getSecret() {
+  const raw = process.env.JWT_SECRET;
+  if (raw) return new TextEncoder().encode(raw);
+  if (isLocal) return new TextEncoder().encode("dev-only-secret");
+  throw new Error("JWT_SECRET não configurado. Defina a variável de ambiente.");
+}
+
+const secret = getSecret();
 const COOKIE = "admin_session";
 
 export async function createToken(): Promise<string> {
@@ -33,9 +43,10 @@ export async function setSession(): Promise<void> {
   store.set(COOKIE, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "strict",
     maxAge: 60 * 60 * 24 * 7,
     path: "/",
+    priority: "high",
   });
 }
 

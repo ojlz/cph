@@ -36,11 +36,11 @@ const content: Record<string, { lines: string[]; highlight: string }> = {
 };
 
 const imageSrc: Record<string, string> = {
-  hamburgueres: "/images/categories/burger.png",
-  pasteis: "/images/categories/pastel.png",
-  bebidas: "/images/categories/drinks.png",
-  sucos: "/images/categories/juice.png",
-  sorvetes: "/images/categories/icecream.png",
+  hamburgueres: "/images/categories/burger.jpg",
+  pasteis: "/images/categories/pastel.jpg",
+  bebidas: "/images/categories/drinks.jpg",
+  sucos: "/images/categories/juice.jpg",
+  sorvetes: "/images/categories/icecream.jpg",
 };
 
 export default function CategoryShowcase({
