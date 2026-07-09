@@ -1,0 +1,14 @@
+{
+  "name": "Casa do Pastel da Hora",
+  "description": "Mais do que uma pastelaria. Um lugar onde tradição, sabor e qualidade se encontram. Pastéis feitos na hora, hambúrgueres artesanais e ingredientes frescos para proporcionar uma experiência inesquecível em Porto Fictício�.",
+  "shortDescription": "O pastel que todo mundo comenta.",
+  "phone": "(00) 90000-0008",
+  "whatsapp": "5500090000008",
+  "instagram": "pasteldahora.site",
+  "address": "Rua Fictícia, 327 — Centro, Porto Fictício� — MS",
+  "foundedYear": 2024,
+  "rating": 4.9,
+  "hasDelivery": true,
+  "hasBalcao": true,
+  "acceptsCoupons": true
+}

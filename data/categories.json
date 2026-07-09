@@ -1,0 +1,7 @@
+[
+  { "id": "pasteis", "name": "Pastéis", "slug": "pasteis", "order": 1, "icon": "Sandwich" },
+  { "id": "hamburgueres", "name": "Hambúrgueres", "slug": "hamburgueres", "order": 2, "icon": "Beef" },
+  { "id": "bebidas", "name": "Bebidas", "slug": "bebidas", "order": 3, "icon": "CupSoda" },
+  { "id": "sucos", "name": "Sucos", "slug": "sucos", "order": 4, "icon": "Apple" },
+  { "id": "sorvetes", "name": "Sorvetes", "slug": "sorvetes", "order": 5, "icon": "IceCream" }
+]

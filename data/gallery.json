@@ -1,0 +1,14 @@
+[
+  {
+    "id": "gallery-1",
+    "src": "/images/gallery/fachada.jpg",
+    "alt": "Fachada da Casa do Pastel da Hora",
+    "order": 1
+  },
+  {
+    "id": "gallery-2",
+    "src": "/images/gallery/interior.jpg",
+    "alt": "Area interna aconchegante",
+    "order": 2
+  }
+]

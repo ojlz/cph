@@ -1,0 +1,47 @@
+{
+  "days": [
+    {
+      "day": "Segunda",
+      "open": "18:00",
+      "close": "23:00",
+      "isOpen": true
+    },
+    {
+      "day": "Terça",
+      "open": "18:00",
+      "close": "23:00",
+      "isOpen": true
+    },
+    {
+      "day": "Quarta",
+      "open": "18:00",
+      "close": "23:00",
+      "isOpen": true
+    },
+    {
+      "day": "Quinta",
+      "open": "18:00",
+      "close": "23:00",
+      "isOpen": true
+    },
+    {
+      "day": "Sexta",
+      "open": "18:00",
+      "close": "23:00",
+      "isOpen": true
+    },
+    {
+      "day": "Sábado",
+      "open": "18:00",
+      "close": "23:00",
+      "isOpen": true
+    },
+    {
+      "day": "Domingo",
+      "open": "18:00",
+      "close": "23:00",
+      "isOpen": true
+    }
+  ],
+  "notes": "Horários podem variar em feriados"
+}

@@ -1,0 +1,15 @@
+{
+  "days": [
+    {
+      "date": "2026-07-09",
+      "pageViews": 13,
+      "events": {
+        "whatsapp:navbar-mobile": 1,
+        "coupon:FERIAS20": 1,
+        "coupon:A10": 1,
+        "whatsapp:cart": 1
+      },
+      "visits": 1
+    }
+  ]
+}
