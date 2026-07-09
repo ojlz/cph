@@ -14,13 +14,14 @@ const groupLabels: Record<string, string> = {
 
 interface Props {
   products: Product[];
+  activeCategoryId: string;
 }
 
-export default function CardapioSearchWrapper({ products }: Props) {
+export default function CardapioSearchWrapper({ products, activeCategoryId }: Props) {
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
-    if (!query.trim()) return products;
+    if (!query.trim()) return products.filter((p) => p.categoryId === activeCategoryId);
     const q = query.toLowerCase();
     return products.filter(
       (p) =>
@@ -28,7 +29,7 @@ export default function CardapioSearchWrapper({ products }: Props) {
         p.description?.toLowerCase().includes(q) ||
         p.group?.toLowerCase().includes(q),
     );
-  }, [products, query]);
+  }, [products, activeCategoryId, query]);
 
   let currentGroup = "";
 

@@ -55,7 +55,7 @@ export default async function CardapioPage({
           whatsapp={settings.whatsapp}
         />
 
-        <CardapioSearchWrapper products={products} />
+        <CardapioSearchWrapper products={allProducts} activeCategoryId={activeCategory} />
       </div>
     </section>
   );
