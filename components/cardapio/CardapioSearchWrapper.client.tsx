@@ -15,6 +15,13 @@ const groupLabels: Record<string, string> = {
   doces: "Doces",
 };
 
+function normalize(str: string): string {
+  return str
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
 interface Props {
   products: Product[];
   activeCategoryId: string;
@@ -25,16 +32,16 @@ export default function CardapioSearchWrapper({ products, activeCategoryId }: Pr
 
   const filtered = useMemo(() => {
     if (!query.trim()) return products.filter((p) => p.categoryId === activeCategoryId);
-    const q = query.toLowerCase();
+    const q = normalize(query);
     const matchedCategoryIds = new Set(
-      categories.filter((c) => c.name.toLowerCase().includes(q)).map((c) => c.id),
+      categories.filter((c) => normalize(c.name).includes(q)).map((c) => c.id),
     );
     return products.filter(
       (p) =>
         matchedCategoryIds.has(p.categoryId) ||
-        p.name.toLowerCase().includes(q) ||
-        p.description?.toLowerCase().includes(q) ||
-        p.group?.toLowerCase().includes(q),
+        normalize(p.name).includes(q) ||
+        normalize(p.description || "").includes(q) ||
+        normalize(p.group || "").includes(q),
     );
   }, [products, activeCategoryId, query]);
 
