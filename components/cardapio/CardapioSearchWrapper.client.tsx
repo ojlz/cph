@@ -4,6 +4,9 @@ import { useState, useMemo } from "react";
 import SearchBar from "./SearchBar.client";
 import ProductCard from "./ProductCard";
 import { Product } from "@/lib/types";
+import { getCategories } from "@/lib/services/category.service";
+
+const categories = getCategories();
 
 const groupLabels: Record<string, string> = {
   tradicionais: "Tradicionais",
@@ -23,8 +26,12 @@ export default function CardapioSearchWrapper({ products, activeCategoryId }: Pr
   const filtered = useMemo(() => {
     if (!query.trim()) return products.filter((p) => p.categoryId === activeCategoryId);
     const q = query.toLowerCase();
+    const matchedCategoryIds = new Set(
+      categories.filter((c) => c.name.toLowerCase().includes(q)).map((c) => c.id),
+    );
     return products.filter(
       (p) =>
+        matchedCategoryIds.has(p.categoryId) ||
         p.name.toLowerCase().includes(q) ||
         p.description?.toLowerCase().includes(q) ||
         p.group?.toLowerCase().includes(q),
