@@ -26,6 +26,9 @@ export interface Category {
   slug: string;
   order: number;
   icon?: string;
+  description?: string;
+  highlight?: string;
+  image?: string;
 }
 
 export interface Promotion {

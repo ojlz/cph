@@ -6,36 +6,36 @@ import { ArrowRight } from "lucide-react";
 import CTAButton from "@/components/shared/CTAButton";
 
 interface CategoryShowcaseProps {
-  categories: { id: string; name: string }[];
+  categories: { id: string; name: string; description?: string; highlight?: string; image?: string }[];
   activeCategoryId: string;
   productCounts: Record<string, number>;
   whatsapp: string;
 }
 
-const content: Record<string, { lines: string[]; highlight: string }> = {
+const defaultContent: Record<string, { lines: string[]; highlight: string }> = {
   hamburgueres: {
     lines: ["Artesanais.", "Suculentos.", "Ingredientes selecionados."],
-    highlight: "⭐ Mais pedido",
+    highlight: "Mais pedido",
   },
   pasteis: {
     lines: ["Feitos na hora.", "Massa crocante.", "Muito recheio."],
-    highlight: "⭐ Categoria mais pedida",
+    highlight: "Categoria mais pedida",
   },
   bebidas: {
     lines: ["Refrigerantes gelados.", "Água e energéticos."],
-    highlight: "🥤 Perfeito para acompanhar",
+    highlight: "Perfeito para acompanhar",
   },
   sucos: {
     lines: ["Naturais.", "Refrescantes.", "Fruta de verdade."],
-    highlight: "🧃 500ml ou 1L",
+    highlight: "500ml ou 1L",
   },
   sorvetes: {
     lines: ["Cremosos.", "Geladinhos.", "Variedade de sabores."],
-    highlight: "🍦 A melhor sobremesa",
+    highlight: "A melhor sobremesa",
   },
 };
 
-const imageSrc: Record<string, string> = {
+const defaultImages: Record<string, string> = {
   hamburgueres: "/images/categories/burger.jpg",
   pasteis: "/images/categories/pastel.jpg",
   bebidas: "/images/categories/drinks.jpg",
@@ -50,8 +50,11 @@ export default function CategoryShowcase({
   whatsapp,
 }: CategoryShowcaseProps) {
   const category = categories.find((c) => c.id === activeCategoryId);
-  const data = content[activeCategoryId];
-  const img = imageSrc[activeCategoryId];
+  const catData = category as { description?: string; highlight?: string; image?: string } | undefined;
+  const data = catData?.description
+    ? { lines: [catData.description], highlight: catData.highlight || "" }
+    : defaultContent[activeCategoryId];
+  const img = catData?.image || defaultImages[activeCategoryId];
   const count = productCounts[activeCategoryId] || 0;
 
   return (

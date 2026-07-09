@@ -3,10 +3,12 @@
 import { useEffect, useState, FormEvent } from "react";
 import { BusinessSettings } from "@/lib/types";
 import { Save } from "lucide-react";
+import { useToast } from "@/components/admin/Toast";
 
 export default function AdminConfiguracoes() {
   const [data, setData] = useState<BusinessSettings | null>(null);
   const [saving, setSaving] = useState(false);
+  const { showSuccess, showError, ToastElement } = useToast();
 
   useEffect(() => {
     fetch("/api/admin/configuracoes")
@@ -22,11 +24,17 @@ export default function AdminConfiguracoes() {
     e.preventDefault();
     if (!data) return;
     setSaving(true);
-    await fetch("/api/admin/configuracoes", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    try {
+      const res = await fetch("/api/admin/configuracoes", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (res.ok) showSuccess("Configurações salvas com sucesso!");
+      else showError("Erro ao salvar configurações");
+    } catch {
+      showError("Erro ao salvar configurações");
+    }
     setSaving(false);
   };
 
@@ -83,6 +91,8 @@ export default function AdminConfiguracoes() {
           <input type="number" value={data.foundedYear} onChange={(e) => update("foundedYear", Number(e.target.value))} className="w-full rounded-xl bg-card border border-border/50 px-4 py-3 text-sm text-white outline-none focus:border-primary/50 transition-colors" />
         </div>
       </div>
+
+      {ToastElement}
     </form>
   );
 }

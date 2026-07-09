@@ -6,6 +6,7 @@ import CategoryTabs from "@/components/cardapio/CategoryTabs.client";
 import CategoryShowcase from "@/components/cardapio/CategoryShowcase.client";
 import ProductCard from "@/components/cardapio/ProductCard";
 import SectionTitle from "@/components/shared/SectionTitle";
+import CardapioSearchWrapper from "@/components/cardapio/CardapioSearchWrapper.client";
 import { Product } from "@/lib/types";
 
 export const metadata: Metadata = {
@@ -34,23 +35,30 @@ function ProductList({ products }: { products: Product[] }) {
   let currentGroup = "";
 
   return (
-    <div className="space-y-3">
-      {products.map((product, i) => {
-        const showGroup = product.group && product.group !== currentGroup;
-        if (product.group) currentGroup = product.group;
+    <CardapioSearchWrapper products={products}>
+      {(filtered) => (
+        <div className="space-y-3">
+          {filtered.length === 0 && (
+            <p className="text-center text-muted-foreground py-8">Nenhum produto encontrado</p>
+          )}
+          {filtered.map((product, i) => {
+            const showGroup = product.group && product.group !== currentGroup;
+            if (product.group) currentGroup = product.group;
 
-        return (
-          <div key={product.id}>
-            {showGroup && (
-              <h3 className={`font-display text-sm font-semibold text-muted-foreground uppercase tracking-wider ${i > 0 ? "pt-8" : ""} mb-3`}>
-                {groupLabels[product.group!] || product.group}
-              </h3>
-            )}
-            <ProductCard product={product} index={i} />
-          </div>
-        );
-      })}
-    </div>
+            return (
+              <div key={product.id}>
+                {showGroup && (
+                  <h3 className={`font-display text-sm font-semibold text-muted-foreground uppercase tracking-wider ${i > 0 ? "pt-8" : ""} mb-3`}>
+                    {groupLabels[product.group!] || product.group}
+                  </h3>
+                )}
+                <ProductCard product={product} index={i} />
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </CardapioSearchWrapper>
   );
 }
 

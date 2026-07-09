@@ -19,6 +19,7 @@ export default function AdminPromocoes() {
   }, []);
 
   const handleDelete = async (id: string) => {
+    if (!confirm("Tem certeza que deseja excluir esta promoção?")) return;
     await fetch("/api/admin/promocoes", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },

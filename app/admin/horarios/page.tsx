@@ -3,6 +3,7 @@
 import { useEffect, useState, FormEvent } from "react";
 import { OpeningHours, DaySchedule } from "@/lib/types";
 import { Save } from "lucide-react";
+import { useToast } from "@/components/admin/Toast";
 
 const defaultDays = [
   "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo",
@@ -11,6 +12,7 @@ const defaultDays = [
 export default function AdminHorarios() {
   const [data, setData] = useState<OpeningHours | null>(null);
   const [saving, setSaving] = useState(false);
+  const { showSuccess, showError, ToastElement } = useToast();
 
   useEffect(() => {
     fetch("/api/admin/horarios")
@@ -31,11 +33,17 @@ export default function AdminHorarios() {
     e.preventDefault();
     if (!data) return;
     setSaving(true);
-    await fetch("/api/admin/horarios", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    try {
+      const res = await fetch("/api/admin/horarios", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (res.ok) showSuccess("Horários salvos com sucesso!");
+      else showError("Erro ao salvar horários");
+    } catch {
+      showError("Erro ao salvar horários");
+    }
     setSaving(false);
   };
 
@@ -108,6 +116,8 @@ export default function AdminHorarios() {
         <label className="text-xs text-muted-foreground mb-1.5 block">Observações (ex: feriados)</label>
         <input value={data.notes || ""} onChange={(e) => setData((prev) => prev ? { ...prev, notes: e.target.value } : prev)} placeholder="Horários podem variar em feriados" className="w-full rounded-xl bg-card border border-border/50 px-4 py-3 text-sm text-white outline-none focus:border-primary/50 transition-colors" />
       </div>
+
+      {ToastElement}
     </form>
   );
 }

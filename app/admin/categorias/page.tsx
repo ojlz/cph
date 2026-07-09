@@ -3,11 +3,13 @@
 import { useEffect, useState, useCallback } from "react";
 import { Category } from "@/lib/types";
 import { Save, GripVertical, Plus, X } from "lucide-react";
+import { useToast } from "@/components/admin/Toast";
 
 export default function AdminCategorias() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const { showSuccess, showError, ToastElement } = useToast();
 
   useEffect(() => {
     fetch("/api/admin/categorias")
@@ -39,6 +41,7 @@ export default function AdminCategorias() {
   };
 
   const removeCategory = (index: number) => {
+    if (!confirm("Remover esta categoria?")) return;
     setCategories((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -54,11 +57,17 @@ export default function AdminCategorias() {
   const handleSave = async () => {
     setSaving(true);
     const reordered = categories.map((c, i) => ({ ...c, order: i + 1 }));
-    await fetch("/api/admin/categorias", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(reordered),
-    });
+    try {
+      const res = await fetch("/api/admin/categorias", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(reordered),
+      });
+      if (res.ok) showSuccess("Categorias salvas com sucesso!");
+      else showError("Erro ao salvar categorias");
+    } catch {
+      showError("Erro ao salvar categorias");
+    }
     setSaving(false);
   };
 
@@ -135,6 +144,8 @@ export default function AdminCategorias() {
           </div>
         ))}
       </div>
+
+      {ToastElement}
     </div>
   );
 }

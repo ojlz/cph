@@ -6,6 +6,9 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getSettings } from "@/lib/services/settings.service";
+
+const settings = getSettings();
 
 const links = [
   { href: "/cardapio", label: "Cardápio" },
@@ -55,7 +58,7 @@ export default function Navbar() {
             </Link>
           ))}
             <Link
-              href="https://wa.me/5500090000008"
+              href={`https://wa.me/${settings.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
               data-track="whatsapp"
@@ -108,7 +111,7 @@ export default function Navbar() {
                 className="mt-4"
               >
                 <Link
-                  href="https://wa.me/5500090000008"
+                  href={`https://wa.me/${settings.whatsapp}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   data-track="whatsapp"

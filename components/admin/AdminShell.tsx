@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Package, List, LayoutDashboard, Home, Megaphone, Clock, Settings, Lock, ShoppingBag, MessageSquare, Menu, X, LogOut } from "lucide-react";
@@ -22,6 +22,22 @@ export default function AdminShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [pendingCount, setPendingCount] = useState(0);
+
+  const checkPending = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/pedidos");
+      if (!res.ok) return;
+      const orders = await res.json();
+      setPendingCount(orders.filter((o: { status: string }) => o.status === "pendente").length);
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    checkPending();
+    const interval = setInterval(checkPending, 30000);
+    return () => clearInterval(interval);
+  }, [checkPending]);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -67,6 +83,11 @@ export default function AdminShell({ children }: { children: ReactNode }) {
               >
                 <item.icon size={18} />
                 {item.label}
+                {item.href === "/admin/pedidos" && pendingCount > 0 && (
+                  <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
+                    {pendingCount}
+                  </span>
+                )}
               </Link>
             );
           })}

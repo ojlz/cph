@@ -4,9 +4,24 @@ import { motion } from "motion/react";
 import Image from "next/image";
 import { ArrowRight, Star, MapPin, Clock, Award } from "lucide-react";
 import CTAButton from "@/components/shared/CTAButton";
-import { getSettings } from "@/lib/services/settings.service";
+import { getSettings, getOpeningHours } from "@/lib/services/settings.service";
 
 const settings = getSettings();
+const hours = getOpeningHours();
+
+function formatHours(): string {
+  const days = hours.days.filter((d) => d.isOpen);
+  if (days.length === 0) return "Consulte horários";
+  const first = days[0];
+  const last = days[days.length - 1];
+  if (first.open && last.close) {
+    const sameTime = days.every((d) => d.open === first.open && d.close === last.close);
+    if (sameTime) {
+      return `${first.open.slice(0, 5)} às ${last.close.slice(0, 5)}`;
+    }
+  }
+  return `${first.open?.slice(0, 5)} às ${last.close?.slice(0, 5)}`;
+}
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 32 },
@@ -84,7 +99,7 @@ export default function Hero() {
             <MapPin size={14} /> Porto Fictício�
           </span>
           <span className="flex items-center gap-2">
-            <Clock size={14} /> Todos os dias, 18h às 23h
+            <Clock size={14} /> {formatHours()}
           </span>
           <span className="flex items-center gap-2">
             <Award size={14} /> Desde {settings.foundedYear}

@@ -11,6 +11,11 @@
       "type": "local",
       "command": ["npx", "-y", "@browsermcp/mcp@latest"],
       "enabled": true
+    },
+    "vercel": {
+      "type": "remote",
+      "url": "https://mcp.vercel.com",
+      "enabled": true
     }
   }
 }
