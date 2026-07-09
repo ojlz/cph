@@ -1,13 +1,1 @@
-[
-  {
-    "id": "promo-1783615562502",
-    "title": "Ferias",
-    "description": "",
-    "type": "direct",
-    "productId": "hamburguer",
-    "oldPrice": 20,
-    "newPrice": 10,
-    "active": true,
-    "validUntil": "2026-07-10"
-  }
-]
+[]
