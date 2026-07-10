@@ -1,5 +1,12 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import CTAButton from "@/components/shared/CTAButton";
+
+export const metadata: Metadata = {
+  title: "Página não encontrada",
+  description: "A página que você procurou não existe ou foi movida.",
+  robots: { index: false },
+};
 
 export default function NotFound() {
   return (

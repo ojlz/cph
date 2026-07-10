@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { getSettings } from "@/lib/services/settings.service";
 import SectionTitle from "@/components/shared/SectionTitle";
+import Breadcrumbs from "@/components/shared/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Sobre",
@@ -21,6 +22,8 @@ export default function SobrePage() {
   return (
     <section className="pt-32 pb-24 md:pb-32">
       <div className="mx-auto max-w-4xl px-4">
+        <Breadcrumbs items={[{ label: "Sobre" }]} />
+
         <SectionTitle
           title="Nossa História"
           subtitle="Mais do que uma pastelaria — um pedaço de Porto Fictício�"

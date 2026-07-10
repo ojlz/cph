@@ -6,6 +6,7 @@ import CategoryTabs from "@/components/cardapio/CategoryTabs.client";
 import CategoryShowcase from "@/components/cardapio/CategoryShowcase.client";
 import CardapioSearchWrapper from "@/components/cardapio/CardapioSearchWrapper.client";
 import SectionTitle from "@/components/shared/SectionTitle";
+import Breadcrumbs from "@/components/shared/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Cardápio",
@@ -81,6 +82,8 @@ export default async function CardapioPage({
       />
 
       <div className="mx-auto max-w-3xl px-4">
+        <Breadcrumbs items={[{ label: "Cardápio" }]} />
+
         <SectionTitle
           title="Nosso Cardápio"
           subtitle="Tudo feito com ingredientes frescos e muito carinho"
