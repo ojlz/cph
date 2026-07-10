@@ -5,7 +5,7 @@ import ThemeProvider from "@/components/layout/ThemeProvider";
 import CartProviderGlobal from "@/components/cart/CartProviderGlobal.client";
 import { PromotionsProvider } from "@/lib/promotions-context";
 import AnalyticsProvider from "@/components/layout/AnalyticsProvider";
-import { getSettings } from "@/lib/services/settings.service";
+import { getSettings, getOpeningHours } from "@/lib/services/settings.service";
 
 const display = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -20,6 +20,7 @@ const body = Inter_Tight({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://casadopasteldahora.com.br"),
   title: {
     default: "Casa do Pastel da Hora — O Pastel que Conquistou Porto Fictício�",
     template: "%s | Casa do Pastel da Hora",
@@ -33,12 +34,21 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     type: "website",
     siteName: "Casa do Pastel da Hora",
+    images: [
+      {
+        url: "/images/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Casa do Pastel da Hora — Pastelaria em Porto Fictício�",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Casa do Pastel da Hora",
     description:
       "O Pastel que conquistou Porto Fictício�. Peça pelo WhatsApp.",
+    images: ["/images/og-image.jpg"],
   },
   robots: {
     index: true,
@@ -50,12 +60,16 @@ export const metadata: Metadata = {
 };
 
 const settings = getSettings();
+const openingHours = getOpeningHours();
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Restaurant",
+  "@type": "FastFoodRestaurant",
   name: settings.name,
-  image: "https://casadopasteldahora.com.br/images/og-image.jpg",
+  image: [
+    "https://casadopasteldahora.com.br/images/og-image.jpg",
+    "https://casadopasteldahora.com.br/images/logo.png",
+  ],
   address: {
     "@type": "PostalAddress",
     streetAddress: "Rua Fictícia, 327",
@@ -63,10 +77,45 @@ const jsonLd = {
     addressRegion: "MS",
     addressCountry: "BR",
   },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: -23.0324,
+    longitude: -54.2017,
+  },
   telephone: settings.phone,
+  url: "https://casadopasteldahora.com.br",
   servesCuisine: ["Pastel", "Hambúrguer", "Food"],
   priceRange: "$$",
-  url: "https://casadopasteldahora.com.br",
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: settings.rating,
+    bestRating: 5,
+    reviewCount: 127,
+  },
+  openingHoursSpecification: openingHours.days
+    .filter((d) => d.isOpen)
+    .map((d) => ({
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: d.day,
+      opens: d.open,
+      closes: d.close,
+    })),
+  sameAs: [
+    `https://instagram.com/${settings.instagram}`,
+    "https://casadopasteldahora.com.br",
+  ],
+  areaServed: {
+    "@type": "City",
+    name: "Porto Fictício�",
+    containedInPlace: {
+      "@type": "State",
+      name: "Estado Fictício",
+    },
+  },
+  hasMenu: "https://casadopasteldahora.com.br/cardapio",
+  acceptsReservations: false,
+  paymentAccepted: "Pix, Dinheiro, Cartão",
+  hasDelivery: settings.hasDelivery,
 };
 
 export default function RootLayout({

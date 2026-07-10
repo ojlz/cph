@@ -35,7 +35,7 @@ export default function Hero() {
       <div className="absolute inset-0">
         <Image
           src="/images/hero.png"
-          alt=""
+          alt="Casa do Pastel da Hora — Pastéis crocantes e hambúrgueres artesanais em Porto Fictício�"
           fill
           className="object-cover"
           priority
