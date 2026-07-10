@@ -14,7 +14,7 @@ export default function SobrePreview() {
           <ScrollReveal className="relative aspect-[4/3] rounded-2xl overflow-hidden">
             <Image
               src="/images/gallery/interior.jpg"
-              alt="Espaco Casa do Pastel da Hora"
+              alt="Espaço Casa do Pastel da Hora"
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"

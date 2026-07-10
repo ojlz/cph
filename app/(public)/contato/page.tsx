@@ -9,6 +9,12 @@ export const metadata: Metadata = {
   title: "Contato",
   description:
     "Entre em contato com a Casa do Pastel da Hora em Porto Fictício�, MS. Pedidos pelo WhatsApp, Instagram e telefone.",
+  openGraph: {
+    title: "Contato — Casa do Pastel da Hora",
+    description:
+      "Entre em contato conosco. Pedidos pelo WhatsApp, Instagram e telefone.",
+    images: ["/images/og-image.jpg"],
+  },
 };
 
 export default function ContatoPage() {
