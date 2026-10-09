@@ -35,7 +35,7 @@ export default function Hero() {
       <div className="absolute inset-0">
         <Image
           src="/images/hero.png"
-          alt="Casa do Pastel da Hora — Pastéis crocantes e hambúrgueres artesanais em Porto Fictício�"
+          alt="Casa do Pastel da Hora — Pastéis crocantes e hambúrgueres artesanais em Porto Fictício"
           fill
           className="object-cover"
           priority
@@ -50,7 +50,7 @@ export default function Hero() {
               <Star key={i} size={16} className="fill-primary text-primary" />
             ))}
             <span className="text-sm text-muted-foreground ml-2">
-              {settings.rating} — Porto Fictício�
+              {settings.rating} — Porto Fictício
             </span>
           </div>
         </motion.div>
@@ -63,7 +63,7 @@ export default function Hero() {
           <br />
           que conquistou
           <br />
-          <span className="text-primary">Porto Fictício�.</span>
+          <span className="text-primary">Porto Fictício.</span>
         </motion.h1>
 
         <motion.p
@@ -96,7 +96,7 @@ export default function Hero() {
           className="mt-12 flex flex-wrap gap-6 text-sm text-muted-foreground"
         >
           <span className="flex items-center gap-2">
-            <MapPin size={14} /> Porto Fictício�
+            <MapPin size={14} /> Porto Fictício
           </span>
           <span className="flex items-center gap-2">
             <Clock size={14} /> {formatHours()}
