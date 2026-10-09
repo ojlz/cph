@@ -614,4 +614,4 @@ npm run dev
 ---
 
 > Documentação gerada em 09/07/2026
-> Projeto: Casa do Pastel da Hora — https://casadopasteldahora.com.br
+> Projeto: Casa do Pastel da Hora — https://cph-pxzys-projects.vercel.app

@@ -2740,7 +2740,7 @@ import type { MetadataRoute } from "next";
 import { getProducts } from "@/lib/services/product.service";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://casadopasteldahora.com.br";
+  const baseUrl = "https://cph-pxzys-projects.vercel.app";
 
   const staticPages = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 1.0 },
@@ -2777,7 +2777,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/"],
       },
     ],
-    sitemap: "https://casadopasteldahora.com.br/sitemap.xml",
+    sitemap: "https://cph-pxzys-projects.vercel.app/sitemap.xml",
   };
 }
 ```
@@ -2820,7 +2820,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Restaurant",
   name: settings.name,
-  image: "https://casadopasteldahora.com.br/images/og-image.jpg",
+  image: "https://cph-pxzys-projects.vercel.app/images/og-image.jpg",
   address: {
     "@type": "PostalAddress",
     streetAddress: "Rua Fictícia, 327",
@@ -2831,7 +2831,7 @@ const jsonLd = {
   telephone: settings.phone,
   servesCuisine: ["Pastel", "Hamburguer", "Food"],
   priceRange: "$$",
-  url: "https://casadopasteldahora.com.br",
+  url: "https://cph-pxzys-projects.vercel.app",
 };
 
 // Add to the body:

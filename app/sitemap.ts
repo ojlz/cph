@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { getProducts } from "@/lib/services/product.service";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://casadopasteldahora.com.br";
+  const baseUrl = "https://cph-pxzys-projects.vercel.app";
 
   const staticPages = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 1.0 },

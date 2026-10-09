@@ -20,7 +20,7 @@ const body = Inter_Tight({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://casadopasteldahora.com.br"),
+  metadataBase: new URL("https://cph-pxzys-projects.vercel.app"),
   title: {
     default: "Casa do Pastel da Hora — O Pastel que Conquistou Porto Fictício",
     template: "%s | Casa do Pastel da Hora",
@@ -67,23 +67,23 @@ const jsonLd = {
   "@type": "FastFoodRestaurant",
   name: settings.name,
   image: [
-    "https://casadopasteldahora.com.br/images/og-image.jpg",
-    "https://casadopasteldahora.com.br/images/logo.png",
+    "https://cph-pxzys-projects.vercel.app/images/og-image.jpg",
+    "https://cph-pxzys-projects.vercel.app/images/logo.png",
   ],
   address: {
     "@type": "PostalAddress",
     streetAddress: "Rua Fictícia, 327",
     addressLocality: "Porto Fictício",
-    addressRegion: "MS",
+    addressRegion: "EX",
     addressCountry: "BR",
   },
   geo: {
     "@type": "GeoCoordinates",
-    latitude: -23.0324,
-    longitude: -54.2017,
+    latitude: -12.345,
+    longitude: -130.78,
   },
   telephone: settings.phone,
-  url: "https://casadopasteldahora.com.br",
+  url: "https://cph-pxzys-projects.vercel.app",
   servesCuisine: ["Pastel", "Hambúrguer", "Food"],
   priceRange: "$$",
   aggregateRating: {
@@ -102,7 +102,7 @@ const jsonLd = {
     })),
   sameAs: [
     `https://instagram.com/${settings.instagram}`,
-    "https://casadopasteldahora.com.br",
+    "https://cph-pxzys-projects.vercel.app",
   ],
   areaServed: {
     "@type": "City",
@@ -112,7 +112,7 @@ const jsonLd = {
       name: "Estado Fictício",
     },
   },
-  hasMenu: "https://casadopasteldahora.com.br/cardapio",
+  hasMenu: "https://cph-pxzys-projects.vercel.app/cardapio",
   acceptsReservations: false,
   paymentAccepted: "Pix, Dinheiro, Cartão",
   hasDelivery: settings.hasDelivery,
@@ -122,12 +122,12 @@ const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: settings.name,
-  url: "https://casadopasteldahora.com.br",
+  url: "https://cph-pxzys-projects.vercel.app",
   potentialAction: {
     "@type": "SearchAction",
     target: {
       "@type": "EntryPoint",
-      urlTemplate: "https://casadopasteldahora.com.br/cardapio?q={search_term_string}",
+      urlTemplate: "https://cph-pxzys-projects.vercel.app/cardapio?q={search_term_string}",
     },
     "query-input": "required name=search_term_string",
   },

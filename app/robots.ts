@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/", "/admin/"],
       },
     ],
-    sitemap: "https://casadopasteldahora.com.br/sitemap.xml",
+    sitemap: "https://cph-pxzys-projects.vercel.app/sitemap.xml",
   };
 }
