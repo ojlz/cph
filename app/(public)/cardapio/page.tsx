@@ -11,7 +11,7 @@ import Breadcrumbs from "@/components/shared/Breadcrumbs";
 export const metadata: Metadata = {
   title: "Cardápio",
   description:
-    "Confira o cardápio da Casa do Pastel da Hora em Porto Fictício�, MS. Pastéis, hambúrgueres, pastéis doces e bebidas.",
+    "Confira o cardápio da Casa do Pastel da Hora em Porto Fictício/EX. Pastéis, hambúrgueres, pastéis doces e bebidas.",
   openGraph: {
     title: "Cardápio | Casa do Pastel da Hora",
     description:

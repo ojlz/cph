@@ -1,8 +1,8 @@
 [
   {
-    "id": "ORD-20260712-6020",
-    "date": "2026-07-12T18:13:16.600Z",
-    "nome": ".",
+    "id": "ORD-DEMO-0001",
+    "date": "2026-01-06T18:13:16.600Z",
+    "nome": "Cliente Modelo",
     "items": [
       {
         "productName": "Carne",
@@ -24,37 +24,8 @@
     "total": 26,
     "mode": "retirada",
     "pagamento": "pix",
-    "observacoes": ".",
+    "observacoes": "Pedido fictício de demonstração.",
     "status": "pendente",
-    "ip": "186.226.195.46"
-  },
-  {
-    "id": "ORD-20260712-9530",
-    "date": "2026-07-12T18:12:30.969Z",
-    "nome": "Victor",
-    "items": [
-      {
-        "productName": "Carne",
-        "variantLabel": "Normal",
-        "price": 13,
-        "quantity": 1,
-        "subtotal": 13
-      },
-      {
-        "productName": "Queijo",
-        "variantLabel": "Normal",
-        "price": 13,
-        "quantity": 1,
-        "subtotal": 13
-      }
-    ],
-    "subtotal": 26,
-    "discountPercent": 0,
-    "total": 26,
-    "mode": "retirada",
-    "pagamento": "pix",
-    "observacoes": ".",
-    "status": "pendente",
-    "ip": "186.226.195.46"
+    "ip": "0.0.0.0"
   }
 ]

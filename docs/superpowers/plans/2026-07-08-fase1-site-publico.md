@@ -261,7 +261,7 @@ export const metadata: Metadata = {
     template: "%s | Casa do Pastel da Hora",
   },
   description:
-    "Pastelaria em Porto Fictício, MS. Pasteis crocantes, hamburgueres artesanais e muito mais. Pedido pelo WhatsApp.",
+    "Pastelaria em Porto Fictício/EX. Pasteis crocantes, hamburgueres artesanais e muito mais. Pedido pelo WhatsApp.",
   openGraph: {
     title: "Casa do Pastel da Hora",
     description:
@@ -422,7 +422,7 @@ export interface BusinessSettings {
   "phone": "(00) 90000-0008",
   "whatsapp": "5500090000008",
   "instagram": "pasteldahora.site",
-  "address": "Rua Fictícia, 327 — Centro, Porto Fictício — MS",
+  "address": "Rua Fictícia, 327 — Centro, Porto Fictício — EX",
   "foundedYear": 2022,
   "rating": 4.9
 }
@@ -1129,7 +1129,7 @@ export const metadata: Metadata = {
     template: "%s | Casa do Pastel da Hora",
   },
   description:
-    "Pastelaria em Porto Fictício, MS. Pasteis crocantes, hamburgueres artesanais e muito mais. Pedido pelo WhatsApp.",
+    "Pastelaria em Porto Fictício/EX. Pasteis crocantes, hamburgueres artesanais e muito mais. Pedido pelo WhatsApp.",
   openGraph: {
     title: "Casa do Pastel da Hora",
     description:
@@ -1225,7 +1225,7 @@ export default function Hero() {
               <Star key={i} size={16} className="fill-primary text-primary" />
             ))}
             <span className="text-sm text-muted-foreground ml-2">
-              {settings.rating} — Porto Fictício, MS
+              {settings.rating} — Porto Fictício/EX
             </span>
           </div>
         </motion.div>
@@ -1267,7 +1267,7 @@ export default function Hero() {
           className="mt-12 flex flex-wrap gap-6 text-sm text-muted-foreground"
         >
           <span className="flex items-center gap-2">
-            <MapPin size={14} /> Porto Fictício, MS
+            <MapPin size={14} /> Porto Fictício/EX
           </span>
           <span className="flex items-center gap-2">
             <Clock size={14} /> Terca a Domingo
@@ -1547,7 +1547,7 @@ import SectionTitle from "@/components/shared/SectionTitle";
 export const metadata: Metadata = {
   title: "Cardapio",
   description:
-    "Confira o cardapio da Casa do Pastel da Hora em Porto Fictício, MS. Pasteis, hamburgueres, pasteis doces e bebidas.",
+    "Confira o cardapio da Casa do Pastel da Hora em Porto Fictício/EX. Pasteis, hamburgueres, pasteis doces e bebidas.",
   openGraph: {
     title: "Cardapio | Casa do Pastel da Hora",
     description:
@@ -1580,7 +1580,7 @@ import SectionTitle from "@/components/shared/SectionTitle";
 export const metadata: Metadata = {
   title: "Cardapio",
   description:
-    "Confira o cardapio da Casa do Pastel da Hora em Porto Fictício, MS. Pasteis, hamburgueres, pasteis doces e bebidas.",
+    "Confira o cardapio da Casa do Pastel da Hora em Porto Fictício/EX. Pasteis, hamburgueres, pasteis doces e bebidas.",
 };
 
 const categories = getCategories();
@@ -1889,7 +1889,7 @@ import SectionTitle from "@/components/shared/SectionTitle";
 export const metadata: Metadata = {
   title: "Promocoes",
   description:
-    "Confira as promocoes imperdiveis da Casa do Pastel da Hora em Porto Fictício, MS. Ofertas por tempo limitado.",
+    "Confira as promocoes imperdiveis da Casa do Pastel da Hora em Porto Fictício/EX. Ofertas por tempo limitado.",
   openGraph: {
     title: "Promocoes | Casa do Pastel da Hora",
     description:
@@ -2167,7 +2167,7 @@ import { Suspense } from "react";
 export const metadata: Metadata = {
   title: "Galeria",
   description:
-    "Veja as fotos da Casa do Pastel da Hora em Porto Fictício, MS. Conheca nosso espaco e nossos produtos.",
+    "Veja as fotos da Casa do Pastel da Hora em Porto Fictício/EX. Conheca nosso espaco e nossos produtos.",
 };
 
 export default function GaleriaPage() {
@@ -2220,7 +2220,7 @@ const settings = getSettings();
 export const metadata: Metadata = {
   title: "Sobre",
   description:
-    "Conheca a historia da Casa do Pastel da Hora em Porto Fictício, MS. Tradicao em fazer pasteis crocantes e hamburgueres artesanais.",
+    "Conheca a historia da Casa do Pastel da Hora em Porto Fictício/EX. Tradicao em fazer pasteis crocantes e hamburgueres artesanais.",
 };
 
 const values = [
@@ -2618,7 +2618,7 @@ import SectionTitle from "@/components/shared/SectionTitle";
 export const metadata: Metadata = {
   title: "Contato",
   description:
-    "Entre em contato com a Casa do Pastel da Hora em Porto Fictício, MS. Pedidos pelo WhatsApp, Instagram e telefone.",
+    "Entre em contato com a Casa do Pastel da Hora em Porto Fictício/EX. Pedidos pelo WhatsApp, Instagram e telefone.",
 };
 
 export default function ContatoPage() {
@@ -2660,7 +2660,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Politica de Privacidade",
   description:
-    "Politica de privacidade da Casa do Pastel da Hora em Porto Fictício, MS.",
+    "Politica de privacidade da Casa do Pastel da Hora em Porto Fictício/EX.",
 };
 
 export default function PrivacidadePage() {
@@ -2673,7 +2673,7 @@ export default function PrivacidadePage() {
 
         <div className="prose prose-invert prose-sm max-w-none space-y-6 text-muted-foreground leading-relaxed">
           <p>
-            A Casa do Pastel da Hora, localizada em Porto Fictício, MS, valoriza
+            A Casa do Pastel da Hora, localizada em Porto Fictício/EX, valoriza
             a privacidade dos seus clientes. Esta politica descreve como
             coletamos, usamos e protegemos suas informacoes.
           </p>

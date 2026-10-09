@@ -9,7 +9,7 @@ import Breadcrumbs from "@/components/shared/Breadcrumbs";
 export const metadata: Metadata = {
   title: "Contato",
   description:
-    "Entre em contato com a Casa do Pastel da Hora em Porto Fictício�, MS. Pedidos pelo WhatsApp, Instagram e telefone.",
+    "Entre em contato com a Casa do Pastel da Hora em Porto Fictício/EX. Pedidos pelo WhatsApp, Instagram e telefone.",
   openGraph: {
     title: "Contato — Casa do Pastel da Hora",
     description:

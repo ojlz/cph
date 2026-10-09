@@ -22,15 +22,15 @@ const body = Inter_Tight({
 export const metadata: Metadata = {
   metadataBase: new URL("https://casadopasteldahora.com.br"),
   title: {
-    default: "Casa do Pastel da Hora — O Pastel que Conquistou Porto Fictício�",
+    default: "Casa do Pastel da Hora — O Pastel que Conquistou Porto Fictício",
     template: "%s | Casa do Pastel da Hora",
   },
   description:
-    "Pastelaria em Porto Fictício�, MS. Pastéis crocantes, hambúrgueres artesanais e muito mais. Pedido pelo WhatsApp.",
+    "Pastelaria em Porto Fictício/EX. Pastéis crocantes, hambúrgueres artesanais e muito mais. Pedido pelo WhatsApp.",
   openGraph: {
     title: "Casa do Pastel da Hora",
     description:
-      "O Pastel que conquistou Porto Fictício�. Peça pelo WhatsApp.",
+      "O Pastel que conquistou Porto Fictício. Peça pelo WhatsApp.",
     locale: "pt_BR",
     type: "website",
     siteName: "Casa do Pastel da Hora",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
         url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Casa do Pastel da Hora — Pastelaria em Porto Fictício�",
+        alt: "Casa do Pastel da Hora — Pastelaria em Porto Fictício",
       },
     ],
   },
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Casa do Pastel da Hora",
     description:
-      "O Pastel que conquistou Porto Fictício�. Peça pelo WhatsApp.",
+      "O Pastel que conquistou Porto Fictício. Peça pelo WhatsApp.",
     images: ["/images/og-image.jpg"],
   },
   robots: {
@@ -73,7 +73,7 @@ const jsonLd = {
   address: {
     "@type": "PostalAddress",
     streetAddress: "Rua Fictícia, 327",
-    addressLocality: "Porto Fictício�",
+    addressLocality: "Porto Fictício",
     addressRegion: "MS",
     addressCountry: "BR",
   },
@@ -106,7 +106,7 @@ const jsonLd = {
   ],
   areaServed: {
     "@type": "City",
-    name: "Porto Fictício�",
+    name: "Porto Fictício",
     containedInPlace: {
       "@type": "State",
       name: "Estado Fictício",

@@ -2,10 +2,10 @@
 
 ## Overview
 
-Premium website + administrative panel for "Casa do Pastel da Hora", a pastelaria/lanchonete in Porto Fictício, MS. The project is divided into 4 phases.
+Premium website + administrative panel for "Casa do Pastel da Hora", a pastelaria/lanchonete in Porto Fictício/EX. The project is divided into 4 phases.
 
 **Business:** Casa do Pastel da Hora
-**Location:** Rua Fictícia 327 - Centro, Porto Fictício, MS
+**Location:** Rua Fictícia, 327 - Centro, Porto Fictício/EX
 **Phone:** (00) 90000-0008
 **Instagram:** @pasteldahora.site
 **Tagline:** Crocancia que conquista. Tradicao que alimenta.

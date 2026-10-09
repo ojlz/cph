@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Política de Privacidade",
   description:
-    "Política de privacidade da Casa do Pastel da Hora em Porto Fictício�, MS.",
+    "Política de privacidade da Casa do Pastel da Hora em Porto Fictício/EX.",
 };
 
 export default function PrivacidadePage() {
@@ -16,7 +16,7 @@ export default function PrivacidadePage() {
 
         <div className="space-y-6 text-muted-foreground leading-relaxed">
           <p>
-            A Casa do Pastel da Hora, localizada em Porto Fictício�, MS, valoriza
+            A Casa do Pastel da Hora, localizada em Porto Fictício/EX, valoriza
             a privacidade dos seus clientes. Esta política descreve como
             coletamos, usamos e protegemos suas informações.
           </p>

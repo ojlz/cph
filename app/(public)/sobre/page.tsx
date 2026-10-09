@@ -7,7 +7,7 @@ import Breadcrumbs from "@/components/shared/Breadcrumbs";
 export const metadata: Metadata = {
   title: "Sobre",
   description:
-    "Conheça a história da Casa do Pastel da Hora em Porto Fictício�, MS. Tradição, sabor e qualidade desde 2024.",
+    "Conheça a história da Casa do Pastel da Hora em Porto Fictício/EX. Tradição, sabor e qualidade desde 2024.",
   openGraph: {
     title: "Sobre — Casa do Pastel da Hora",
     description:
@@ -26,7 +26,7 @@ export default function SobrePage() {
 
         <SectionTitle
           title="Nossa História"
-          subtitle="Mais do que uma pastelaria — um pedaço de Porto Fictício�"
+          subtitle="Mais do que uma pastelaria — um pedaço de Porto Fictício"
         />
 
         <div className="space-y-8 text-muted-foreground leading-relaxed">
@@ -48,7 +48,7 @@ export default function SobrePage() {
           <div className="grid sm:grid-cols-3 gap-6">
             <div className="rounded-2xl bg-card border border-border/50 p-6 text-center">
               <p className="font-display text-3xl font-bold text-primary">Desde {settings.foundedYear}</p>
-              <p className="text-sm text-muted-foreground mt-1">Servindo Porto Fictício�</p>
+              <p className="text-sm text-muted-foreground mt-1">Servindo Porto Fictício</p>
             </div>
             <div className="rounded-2xl bg-card border border-border/50 p-6 text-center">
               <p className="font-display text-3xl font-bold text-primary">{settings.rating}</p>
@@ -66,7 +66,7 @@ export default function SobrePage() {
           </p>
 
           <p>
-            Venha nos conhecer na Rua Fictícia, 327, no centro de Porto Fictício�.
+            Venha nos conhecer na Rua Fictícia, 327, no centro de Porto Fictício.
             Estamos todos os dias das 18h às 23h, prontos para receber você!
           </p>
         </div>
