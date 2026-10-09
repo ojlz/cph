@@ -4,26 +4,33 @@ import { cookies } from "next/headers";
 const isLocal =
   process.env.LOCAL === "true" || process.env.NODE_ENV === "development";
 
-function getSecret() {
+let _secret: Uint8Array | null = null;
+function getSecret(): Uint8Array {
+  if (_secret) return _secret;
   const raw = process.env.JWT_SECRET;
-  if (raw) return new TextEncoder().encode(raw);
-  if (isLocal) return new TextEncoder().encode("dev-only-secret");
+  if (raw) {
+    _secret = new TextEncoder().encode(raw);
+    return _secret;
+  }
+  if (isLocal) {
+    _secret = new TextEncoder().encode("dev-only-secret");
+    return _secret;
+  }
   throw new Error("JWT_SECRET não configurado. Defina a variável de ambiente.");
 }
 
-const secret = getSecret();
 const COOKIE = "admin_session";
 
 export async function createToken(): Promise<string> {
   return new SignJWT({ role: "admin" })
     .setProtectedHeader({ alg: "HS256" })
     .setExpirationTime("7d")
-    .sign(secret);
+    .sign(getSecret());
 }
 
 export async function verifyToken(token: string): Promise<boolean> {
   try {
-    await jwtVerify(token, secret);
+    await jwtVerify(token, getSecret());
     return true;
   } catch {
     return false;
